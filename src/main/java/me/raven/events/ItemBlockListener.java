@@ -20,11 +20,13 @@ public class ItemBlockListener implements Listener {
         Inventory clickedInv = event.getClickedInventory();
         ItemStack clickedItem = event.getCurrentItem();
 
-        if (!rvInventory.inventoryCheck(clickedInv)) return;
+        if (!rvInventory.isInventoryNull(clickedInv)) return;
 
-        if (!rvInventory.itemCheck(clickedItem)) return;
+        if (!rvInventory.isSameInventory(clickedInv)) return;
 
-        if (!rvInventory.containsBlockedItem(clickedItem)) return;
+        if (!rvInventory.isItemNull(clickedItem)) return;
+
+        if (!rvInventory.hasBlockedItem(clickedItem)) return;
 
         event.setCancelled(true);
     }

@@ -64,10 +64,6 @@ public class RvInventory {
         blockedKeys.remove(key);
     }
 
-    public boolean hasBlockedKey(NBTItem nbtItem) {
-        return nbtItem.getKeys().stream().anyMatch(blockedKeys::contains);
-    }
-
     public boolean hasBlockedKey(ItemStack itemStack) {
         return new NBTItem(itemStack).getKeys().stream().anyMatch(blockedKeys::contains);
     }
@@ -86,27 +82,43 @@ public class RvInventory {
         blockedItems.remove(itemStack);
     }
 
-    public boolean containsBlockedItem(ItemStack itemStack) {
+    public boolean hasBlockedItem(ItemStack itemStack) {
         return blockedItems.contains(itemStack);
     }
 
 
     // REGISTER LISTENERS
-    public void registerAll(JavaPlugin plugin) {
+    public RvInventory registerAll(JavaPlugin plugin) {
         plugin.getServer().getPluginManager().registerEvents(new ItemBlockListener(this), plugin);
         plugin.getServer().getPluginManager().registerEvents(new KeyBlockListener(this), plugin);
+        return this;
+    }
+
+    public RvInventory registerKeyBlocker(JavaPlugin plugin) {
+        plugin.getServer().getPluginManager().registerEvents(new KeyBlockListener(this), plugin);
+        return this;
+    }
+
+    public RvInventory registerItemBlocker(JavaPlugin plugin) {
+        plugin.getServer().getPluginManager().registerEvents(new ItemBlockListener(this), plugin);
+        return this;
     }
 
     // LISTENER HELPERS
-    public boolean inventoryCheck(Inventory inventory) {
-        return !(inventory == null || !inventory.equals(this.inventory));
+    public boolean isInventoryNull(Inventory inventory) {
+        return inventory == null;
     }
 
-    public boolean itemCheck(ItemStack itemStack) {
+    public boolean isSameInventory(Inventory inventory) {
+        return this.inventory.equals(inventory);
+    }
+
+    public boolean isItemNull(ItemStack itemStack) {
         return !(itemStack == null || itemStack.getType() == Material.AIR);
     }
 
     // COLUMN AND ROW FEATURES
+
     public RvInventory removeRow(int index) {
         if (index > rowAmount || index < 0) return this;
 

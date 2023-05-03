@@ -5,25 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d8ed8768-44a0-4e0d-9e8b-a82b00773265" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gradlew" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gradlew.bat" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/me/raven/Main.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/me/raven/RvColumn.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/me/raven/RvInventory.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/me/raven/RvLayout.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/me/raven/RvPageInventory.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/me/raven/RvRow.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/me/raven/events/ItemBlockListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/me/raven/events/KeyBlockListener.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/me/raven/Abstracts/RvArrangement.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/me/raven/RvSlot.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/raven/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/raven/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/raven/RvColumn.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/raven/RvColumn.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/raven/RvInventory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/raven/RvInventory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/raven/RvRow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/raven/RvRow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/raven/events/ItemBlockListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/raven/events/ItemBlockListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/raven/events/KeyBlockListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/raven/events/KeyBlockListener.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,6 +43,14 @@
       </state>
     </system>
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -65,6 +64,7 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "last_opened_file_path": "/Users/ravan/Documents/JavaDev/RavenInventory/src/main/java/me/raven",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.0",

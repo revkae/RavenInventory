@@ -21,12 +21,13 @@ public class KeyBlockListener implements Listener {
         Inventory clickedInv = event.getClickedInventory();
         ItemStack clickedItem = event.getCurrentItem();
 
-        if (!rvInventory.inventoryCheck(clickedInv)) return;
+        if (!rvInventory.isInventoryNull(clickedInv)) return;
 
-        if (!rvInventory.itemCheck(clickedItem)) return;
+        if (!rvInventory.isSameInventory(clickedInv)) return;
 
-        NBTItem nbtItem = new NBTItem(clickedItem);
-        if (!rvInventory.hasBlockedKey(nbtItem)) return;
+        if (!rvInventory.isItemNull(clickedItem)) return;
+
+        if (!rvInventory.hasBlockedKey(clickedItem)) return;
 
         event.setCancelled(true);
     }
