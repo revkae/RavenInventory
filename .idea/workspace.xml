@@ -5,14 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d8ed8768-44a0-4e0d-9e8b-a82b00773265" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/me/raven/Custom/RvCustomEvent.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/me/raven/events/CustomEventListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/me/raven/events/ItemAllowListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/me/raven/events/KeyAllowListener.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/me/raven/RvInventory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/raven/RvInventory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/raven/RvLayout.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/raven/RvLayout.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/raven/events/ItemBlockListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/raven/events/ItemBlockListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/raven/events/KeyBlockListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/raven/events/KeyBlockListener.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,6 +66,9 @@
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/main/java/me/raven" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="me.raven.events" />
     </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />

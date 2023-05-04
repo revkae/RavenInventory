@@ -3,6 +3,7 @@ package me.raven;
 import de.tr7zw.nbtapi.NBTItem;
 import me.raven.events.ItemAllowListener;
 import me.raven.events.ItemBlockListener;
+import me.raven.events.KeyAllowListener;
 import me.raven.events.KeyBlockListener;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -26,6 +27,7 @@ public class RvInventory {
     private final List<ItemStack> blockedItems = new ArrayList<>();
     private final List<String> blockedKeys = new ArrayList<>();
     private final List<ItemStack> allowedItems = new ArrayList<>();
+    private final List<String> allowedKeys = new ArrayList<>();
 
     public RvInventory(Inventory inventory) {
         this.inventory = inventory;
@@ -105,13 +107,29 @@ public class RvInventory {
         return allowedItems.contains(itemStack);
     }
 
+    // ALLOWED KEY FEATURE
+    public void addAllowedKey(String key) {
+        if (allowedKeys.contains(key)) return;
 
+        allowedKeys.add(key);
+    }
+
+    public void removeAllowedKey(String key) {
+        if (!allowedKeys.contains(key)) return;
+
+        allowedKeys.remove(key);
+    }
+
+    public boolean hasAllowedKey(ItemStack itemStack) {
+        return new NBTItem(itemStack).getKeys().stream().anyMatch(allowedKeys::contains);
+    }
 
     // REGISTER LISTENERS
     public RvInventory registerAll(JavaPlugin plugin) {
         plugin.getServer().getPluginManager().registerEvents(new ItemBlockListener(this), plugin);
         plugin.getServer().getPluginManager().registerEvents(new KeyBlockListener(this), plugin);
         plugin.getServer().getPluginManager().registerEvents(new ItemAllowListener(this), plugin);
+        plugin.getServer().getPluginManager().registerEvents(new KeyAllowListener(this), plugin);
         return this;
     }
 
@@ -127,6 +145,11 @@ public class RvInventory {
 
     public RvInventory registerItemAllower(JavaPlugin plugin) {
         plugin.getServer().getPluginManager().registerEvents(new ItemAllowListener(this), plugin);
+        return this;
+    }
+
+    public RvInventory registerKeyAllower(JavaPlugin plugin) {
+        plugin.getServer().getPluginManager().registerEvents(new KeyAllowListener(this), plugin);
         return this;
     }
 
