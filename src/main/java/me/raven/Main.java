@@ -5,6 +5,6 @@ import org.bukkit.inventory.ItemStack;
 
 public class Main {
     public static void main(String[] args) {
-        
+
     }
 }
