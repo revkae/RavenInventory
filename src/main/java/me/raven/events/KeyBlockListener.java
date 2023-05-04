@@ -10,7 +10,7 @@ import org.bukkit.inventory.ItemStack;
 
 public class KeyBlockListener implements Listener {
 
-    private final  RvInventory rvInventory;
+    private final RvInventory rvInventory;
 
     public KeyBlockListener(RvInventory rvInventory) {
         this.rvInventory = rvInventory;
@@ -18,12 +18,12 @@ public class KeyBlockListener implements Listener {
 
     @EventHandler
     public void onClick(InventoryClickEvent event) {
-        Inventory clickedInv = event.getClickedInventory();
+        RvInventory clickedInv = new RvInventory(event.getClickedInventory());
         ItemStack clickedItem = event.getCurrentItem();
 
-        if (!rvInventory.isInventoryNull(clickedInv)) return;
+        if (!rvInventory.isInventoryNull()) return;
 
-        if (!rvInventory.isSameInventory(clickedInv)) return;
+        if (!rvInventory.isSameInventory(clickedInv.build())) return;
 
         if (!rvInventory.isItemNull(clickedItem)) return;
 

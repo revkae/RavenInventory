@@ -1,6 +1,7 @@
 package me.raven;
 
 import de.tr7zw.nbtapi.NBTItem;
+import me.raven.events.ItemAllowListener;
 import me.raven.events.ItemBlockListener;
 import me.raven.events.KeyBlockListener;
 import org.bukkit.Bukkit;
@@ -24,6 +25,7 @@ public class RvInventory {
     private final int columnAmount = 9;
     private final List<ItemStack> blockedItems = new ArrayList<>();
     private final List<String> blockedKeys = new ArrayList<>();
+    private final List<ItemStack> allowedItems = new ArrayList<>();
 
     public RvInventory(Inventory inventory) {
         this.inventory = inventory;
@@ -86,11 +88,30 @@ public class RvInventory {
         return blockedItems.contains(itemStack);
     }
 
+    // ALLOWED ITEM FEATURE
+    public void addAllowedItem(ItemStack itemStack) {
+        if (allowedItems.contains(itemStack)) return;
+
+        allowedItems.add(itemStack);
+    }
+
+    public void removeAllowedItem(ItemStack itemStack) {
+        if (!allowedItems.contains(itemStack)) return;
+
+        allowedItems.remove(itemStack);
+    }
+
+    public boolean hasAllowedItem(ItemStack itemStack) {
+        return allowedItems.contains(itemStack);
+    }
+
+
 
     // REGISTER LISTENERS
     public RvInventory registerAll(JavaPlugin plugin) {
         plugin.getServer().getPluginManager().registerEvents(new ItemBlockListener(this), plugin);
         plugin.getServer().getPluginManager().registerEvents(new KeyBlockListener(this), plugin);
+        plugin.getServer().getPluginManager().registerEvents(new ItemAllowListener(this), plugin);
         return this;
     }
 
@@ -104,8 +125,13 @@ public class RvInventory {
         return this;
     }
 
+    public RvInventory registerItemAllower(JavaPlugin plugin) {
+        plugin.getServer().getPluginManager().registerEvents(new ItemAllowListener(this), plugin);
+        return this;
+    }
+
     // LISTENER HELPERS
-    public boolean isInventoryNull(Inventory inventory) {
+    public boolean isInventoryNull() {
         return inventory == null;
     }
 

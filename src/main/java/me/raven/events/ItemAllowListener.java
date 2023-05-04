@@ -1,17 +1,19 @@
 package me.raven.events;
 
+import me.raven.Custom.RvCustomEvent;
 import me.raven.RvInventory;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-public class ItemBlockListener implements Listener {
+public class ItemAllowListener implements Listener {
 
     private final RvInventory rvInventory;
 
-    public ItemBlockListener(RvInventory rvInventory) {
+    public ItemAllowListener(RvInventory rvInventory) {
         this.rvInventory = rvInventory;
     }
 
@@ -19,6 +21,7 @@ public class ItemBlockListener implements Listener {
     public void onClick(InventoryClickEvent event) {
         RvInventory clickedInv = new RvInventory(event.getClickedInventory());
         ItemStack clickedItem = event.getCurrentItem();
+        Player player = (Player) event.getWhoClicked();
 
         if (!clickedInv.isInventoryNull()) return;
 
@@ -26,9 +29,8 @@ public class ItemBlockListener implements Listener {
 
         if (!rvInventory.isItemNull(clickedItem)) return;
 
-        if (!rvInventory.hasBlockedItem(clickedItem)) return;
+        if (!rvInventory.hasAllowedItem(clickedItem)) return;
 
-        event.setCancelled(true);
+        Bukkit.getServer().getPluginManager().callEvent(new RvCustomEvent(player, event.getClickedInventory(), event));
     }
-
 }
