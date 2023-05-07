@@ -34,7 +34,7 @@ public class KeyBlockListener implements Listener {
 
         if (!rvInventory.hasBlockedKey(clickedItem)) return;
 
-        Bukkit.getServer().getPluginManager().callEvent(new RvBlockItemEvent(player, event.getClickedInventory(), event));
+        Bukkit.getServer().getPluginManager().callEvent(new RvBlockItemEvent(player, clickedItem, event.getClickedInventory(), event));
     }
 
 }

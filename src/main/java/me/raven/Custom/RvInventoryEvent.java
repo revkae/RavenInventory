@@ -13,15 +13,15 @@ public class RvInventoryEvent extends Event {
 
     private final Player player;
     private final ItemStack trigger;
-    private final Inventory closedInventory;
-    private final Inventory openedInventory;
+    private final Inventory oldInventory;
+    private final Inventory newInventory;
     private final InventoryClickEvent event;
 
-    public RvInventoryEvent(Player player, ItemStack trigger, Inventory closedInventory, Inventory openedInventory, InventoryClickEvent event) {
+    public RvInventoryEvent(Player player, ItemStack trigger, Inventory oldInventory, Inventory newInventory, InventoryClickEvent event) {
         this.player = player;
         this.trigger = trigger;
-        this.closedInventory = closedInventory;
-        this.openedInventory = openedInventory;
+        this.oldInventory = oldInventory;
+        this.newInventory = newInventory;
         this.event = event;
     }
 
@@ -29,16 +29,16 @@ public class RvInventoryEvent extends Event {
         return event;
     }
 
-    public Inventory getClosedInventory() {
-        return closedInventory;
+    public Inventory getOldInventory() {
+        return oldInventory;
     }
 
     public Player getPlayer() {
         return player;
     }
 
-    public Inventory getOpenedInventory() {
-        return openedInventory;
+    public Inventory getNewInventory() {
+        return newInventory;
     }
 
     public ItemStack getTrigger() {

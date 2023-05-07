@@ -31,6 +31,6 @@ public class ItemAllowListener implements Listener {
 
         if (!rvInventory.hasAllowedItem(clickedItem)) return;
 
-        Bukkit.getServer().getPluginManager().callEvent(new RvAllowItemEvent(player, event.getClickedInventory(), event));
+        Bukkit.getServer().getPluginManager().callEvent(new RvAllowItemEvent(player, clickedItem, event.getClickedInventory(), event));
     }
 }

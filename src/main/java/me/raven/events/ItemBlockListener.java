@@ -32,7 +32,7 @@ public class ItemBlockListener implements Listener {
 
         if (!rvInventory.hasBlockedItem(clickedItem)) return;
 
-        Bukkit.getServer().getPluginManager().callEvent(new RvBlockItemEvent(player, event.getClickedInventory(), event));
+        Bukkit.getServer().getPluginManager().callEvent(new RvBlockItemEvent(player, clickedItem, event.getClickedInventory(), event));
     }
 
 }

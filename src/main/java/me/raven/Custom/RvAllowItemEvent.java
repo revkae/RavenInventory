@@ -6,17 +6,20 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryInteractEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
 public class RvAllowItemEvent extends Event {
 
     private static final HandlerList handlers = new HandlerList();
 
     private final Player player;
+    private final ItemStack trigger;
     private final Inventory inventory;
     private final InventoryClickEvent event;
 
-    public RvAllowItemEvent(Player player, Inventory inventory, InventoryClickEvent event) {
+    public RvAllowItemEvent(Player player, ItemStack trigger, Inventory inventory, InventoryClickEvent event) {
         this.player = player;
+        this.trigger = trigger;
         this.inventory = inventory;
         this.event = event;
     }
@@ -31,6 +34,10 @@ public class RvAllowItemEvent extends Event {
 
     public Player getPlayer() {
         return player;
+    }
+
+    public ItemStack getTrigger() {
+        return trigger;
     }
 
     public HandlerList getHandlers() {

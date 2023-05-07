@@ -31,7 +31,7 @@ public class KeyAllowListener implements Listener {
 
         if (!rvInventory.hasAllowedKey(clickedItem)) return;
 
-        Bukkit.getServer().getPluginManager().callEvent(new RvAllowItemEvent(player, event.getClickedInventory(), event));
+        Bukkit.getServer().getPluginManager().callEvent(new RvAllowItemEvent(player, clickedItem, event.getClickedInventory(), event));
     }
 
 }
