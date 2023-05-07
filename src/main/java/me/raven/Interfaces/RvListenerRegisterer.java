@@ -11,6 +11,7 @@ public interface RvListenerRegisterer {
         plugin.getServer().getPluginManager().registerEvents(new KeyBlockListener(inventory), plugin);
         plugin.getServer().getPluginManager().registerEvents(new ItemAllowListener(inventory), plugin);
         plugin.getServer().getPluginManager().registerEvents(new KeyAllowListener(inventory), plugin);
+        plugin.getServer().getPluginManager().registerEvents(new InventoryOpenerListener(inventory), plugin);
     }
 
     default void registerKeyBlocker(RvInventory inventory, JavaPlugin plugin) {
