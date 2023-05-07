@@ -1,6 +1,6 @@
 package me.raven.events;
 
-import me.raven.Custom.RvCustomEvent;
+import me.raven.Custom.RvAllowItemEvent;
 import me.raven.RvInventory;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -31,6 +31,6 @@ public class ItemAllowListener implements Listener {
 
         if (!rvInventory.hasAllowedItem(clickedItem)) return;
 
-        Bukkit.getServer().getPluginManager().callEvent(new RvCustomEvent(player, event.getClickedInventory(), event));
+        Bukkit.getServer().getPluginManager().callEvent(new RvAllowItemEvent(player, event.getClickedInventory(), event));
     }
 }
