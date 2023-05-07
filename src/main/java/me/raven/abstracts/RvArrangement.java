@@ -1,4 +1,4 @@
-package me.raven.Abstracts;
+package me.raven.abstracts;
 
 import me.raven.RvColumn;
 import me.raven.RvSlot;

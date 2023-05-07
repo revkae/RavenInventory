@@ -1,10 +1,7 @@
 package me.raven.Interfaces;
 
 import me.raven.RvInventory;
-import me.raven.events.ItemAllowListener;
-import me.raven.events.ItemBlockListener;
-import me.raven.events.KeyAllowListener;
-import me.raven.events.KeyBlockListener;
+import me.raven.events.*;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public interface RvListenerRegisterer {
@@ -30,5 +27,9 @@ public interface RvListenerRegisterer {
 
     default void registerKeyAllower(RvInventory inventory, JavaPlugin plugin) {
         plugin.getServer().getPluginManager().registerEvents(new KeyAllowListener(inventory), plugin);
+    }
+
+    default void registerInventoryOpenerAllower(RvInventory inventory, JavaPlugin plugin) {
+        plugin.getServer().getPluginManager().registerEvents(new InventoryOpenerListener(inventory), plugin);
     }
 }

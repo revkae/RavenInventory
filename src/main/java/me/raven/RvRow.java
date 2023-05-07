@@ -1,6 +1,6 @@
 package me.raven;
 
-import me.raven.Abstracts.RvArrangement;
+import me.raven.abstracts.RvArrangement;
 import org.bukkit.inventory.ItemStack;
 
 public class RvRow extends RvArrangement {

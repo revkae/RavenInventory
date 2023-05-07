@@ -11,9 +11,9 @@ public class RvAllowItemEvent extends Event {
 
     private static final HandlerList handlers = new HandlerList();
 
-    private Player player;
-    private Inventory inventory;
-    private InventoryClickEvent event;
+    private final Player player;
+    private final Inventory inventory;
+    private final InventoryClickEvent event;
 
     public RvAllowItemEvent(Player player, Inventory inventory, InventoryClickEvent event) {
         this.player = player;

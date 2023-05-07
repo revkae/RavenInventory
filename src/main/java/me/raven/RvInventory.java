@@ -29,7 +29,8 @@ public class RvInventory implements
         RvSetItem,
         RvGetItem,
         RvGetSlot,
-        RvItemNBT
+        RvItemNBT,
+        RvInventoryOpener
 {
 
     private Inventory inventory;
@@ -41,7 +42,7 @@ public class RvInventory implements
     private final List<ItemStack> allowedItems = new ArrayList<>();
     private final List<String> allowedKeys = new ArrayList<>();
 
-    private final Map<ItemStack, Inventory> inventoryPerItem = new HashMap<>();
+    private final Map<ItemStack, Inventory> inventoryOpener = new HashMap<>();
 
     public RvInventory(Inventory inventory) {
         this.inventory = inventory;
@@ -66,6 +67,32 @@ public class RvInventory implements
     public RvInventory(InventoryHolder holder, int size, String title) {
         this.inventory = Bukkit.createInventory(holder, size, title);
         this.rowAmount = inventory.getSize() / columnAmount;
+    }
+
+    @Override
+    public Inventory getItemForInventory(ItemStack itemStack) {
+        return inventoryOpener.get(itemStack);
+    }
+
+    @Override
+    public RvInventory addItemForInventory(ItemStack itemStack, Inventory inventory) {
+        if (inventoryOpener.containsKey(itemStack)) return this;
+
+        inventoryOpener.put(itemStack, inventory);
+        return this;
+    }
+
+    @Override
+    public RvInventory removeItemForInventory(ItemStack itemStack, Inventory inventory) {
+        if (!inventoryOpener.containsKey(itemStack)) return this;
+
+        inventoryOpener.remove(itemStack);
+        return this;
+    }
+
+    @Override
+    public boolean containsItemForInventory(ItemStack itemStack) {
+        return inventoryOpener.containsKey(itemStack);
     }
 
     @Override
