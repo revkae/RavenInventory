@@ -1,10 +1,7 @@
 package me.raven;
 
 import de.tr7zw.nbtapi.NBTItem;
-import me.raven.events.ItemAllowListener;
-import me.raven.events.ItemBlockListener;
-import me.raven.events.KeyAllowListener;
-import me.raven.events.KeyBlockListener;
+import me.raven.Interfaces.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
@@ -13,21 +10,38 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class RvInventory {
+public class RvInventory implements
+        RvItemBlocker,
+        RvKeyBlocker,
+        RvItemAllower,
+        RvKeyAllower,
+        RvListenerRegisterer,
+        RvListenerHelper,
+        RvRowHelper,
+        RvColumnHelper,
+        RvUsefullFeatures,
+        RvLayoutMethods,
+        RvSetItem,
+        RvGetItem,
+        RvGetSlot,
+        RvItemNBT
+{
 
     private Inventory inventory;
     private final int rowAmount;
     private final int columnAmount = 9;
     private final List<ItemStack> blockedItems = new ArrayList<>();
     private final List<String> blockedKeys = new ArrayList<>();
+
     private final List<ItemStack> allowedItems = new ArrayList<>();
     private final List<String> allowedKeys = new ArrayList<>();
+
+    private final Map<ItemStack, Inventory> inventoryPerItem = new HashMap<>();
 
     public RvInventory(Inventory inventory) {
         this.inventory = inventory;
@@ -54,120 +68,98 @@ public class RvInventory {
         this.rowAmount = inventory.getSize() / columnAmount;
     }
 
-    // BLOCKED KEYS FEATURE
-
-    public void addBlockedKey(String key) {
-        if (blockedKeys.contains(key)) return;
-
-        blockedKeys.add(key);
-    }
-
-    public void removeBlockedKey(String key) {
-        if (!blockedKeys.contains(key)) return;
-
-        blockedKeys.remove(key);
-    }
-
-    public boolean hasBlockedKey(ItemStack itemStack) {
-        return new NBTItem(itemStack).getKeys().stream().anyMatch(blockedKeys::contains);
-    }
-
-    // BLOCKED ITEM FEATURE
-
+    @Override
     public void addBlockedItem(ItemStack itemStack) {
         if (blockedItems.contains(itemStack)) return;
 
         blockedItems.add(itemStack);
     }
 
+    @Override
     public void removeBlockedItem(ItemStack itemStack) {
         if (!blockedItems.contains(itemStack)) return;
 
         blockedItems.remove(itemStack);
     }
 
+    @Override
+    public void addBlockedKey(String key) {
+        if (blockedKeys.contains(key)) return;
+
+        blockedKeys.add(key);
+    }
+
+    @Override
+    public void removeBlockedKey(String key) {
+        if (!blockedKeys.contains(key)) return;
+
+        blockedKeys.remove(key);
+    }
+
+    @Override
+    public boolean hasBlockedKey(ItemStack itemStack) {
+        return new NBTItem(itemStack).getKeys().stream().anyMatch(blockedKeys::contains);
+    }
+
+    @Override
     public boolean hasBlockedItem(ItemStack itemStack) {
         return blockedItems.contains(itemStack);
     }
 
-    // ALLOWED ITEM FEATURE
+    @Override
     public void addAllowedItem(ItemStack itemStack) {
         if (allowedItems.contains(itemStack)) return;
 
         allowedItems.add(itemStack);
     }
 
+    @Override
     public void removeAllowedItem(ItemStack itemStack) {
         if (!allowedItems.contains(itemStack)) return;
 
         allowedItems.remove(itemStack);
     }
 
+    @Override
     public boolean hasAllowedItem(ItemStack itemStack) {
         return allowedItems.contains(itemStack);
     }
 
-    // ALLOWED KEY FEATURE
+    @Override
     public void addAllowedKey(String key) {
         if (allowedKeys.contains(key)) return;
 
         allowedKeys.add(key);
     }
 
+    @Override
     public void removeAllowedKey(String key) {
         if (!allowedKeys.contains(key)) return;
 
         allowedKeys.remove(key);
     }
 
+    @Override
     public boolean hasAllowedKey(ItemStack itemStack) {
         return new NBTItem(itemStack).getKeys().stream().anyMatch(allowedKeys::contains);
     }
 
-    // REGISTER LISTENERS
-    public RvInventory registerAll(JavaPlugin plugin) {
-        plugin.getServer().getPluginManager().registerEvents(new ItemBlockListener(this), plugin);
-        plugin.getServer().getPluginManager().registerEvents(new KeyBlockListener(this), plugin);
-        plugin.getServer().getPluginManager().registerEvents(new ItemAllowListener(this), plugin);
-        plugin.getServer().getPluginManager().registerEvents(new KeyAllowListener(this), plugin);
-        return this;
-    }
-
-    public RvInventory registerKeyBlocker(JavaPlugin plugin) {
-        plugin.getServer().getPluginManager().registerEvents(new KeyBlockListener(this), plugin);
-        return this;
-    }
-
-    public RvInventory registerItemBlocker(JavaPlugin plugin) {
-        plugin.getServer().getPluginManager().registerEvents(new ItemBlockListener(this), plugin);
-        return this;
-    }
-
-    public RvInventory registerItemAllower(JavaPlugin plugin) {
-        plugin.getServer().getPluginManager().registerEvents(new ItemAllowListener(this), plugin);
-        return this;
-    }
-
-    public RvInventory registerKeyAllower(JavaPlugin plugin) {
-        plugin.getServer().getPluginManager().registerEvents(new KeyAllowListener(this), plugin);
-        return this;
-    }
-
-    // LISTENER HELPERS
+    @Override
     public boolean isInventoryNull() {
         return inventory == null;
     }
 
+    @Override
     public boolean isSameInventory(Inventory inventory) {
         return this.inventory.equals(inventory);
     }
 
+    @Override
     public boolean isItemNull(ItemStack itemStack) {
         return !(itemStack == null || itemStack.getType() == Material.AIR);
     }
 
-    // COLUMN AND ROW FEATURES
-
+    @Override
     public RvInventory removeRow(int index) {
         if (index > rowAmount || index < 0) return this;
 
@@ -182,6 +174,7 @@ public class RvInventory {
         return this;
     }
 
+    @Override
     public RvInventory removeRows(int... indexes) {
         for (int index : indexes) {
             removeRow(index);
@@ -189,6 +182,7 @@ public class RvInventory {
         return this;
     }
 
+    @Override
     public RvInventory setRow(int index, RvRow row) {
         if (index > rowAmount || index < 0) return this;
 
@@ -203,6 +197,7 @@ public class RvInventory {
         return this;
     }
 
+    @Override
     public RvInventory setRows(RvRow row, int... indexes) {
         for (int index : indexes) {
             setRow(index, row);
@@ -210,6 +205,7 @@ public class RvInventory {
         return this;
     }
 
+    @Override
     public RvInventory removeColumn(int index) {
         if (columnAmount < index || index < 0) return this;
 
@@ -223,6 +219,7 @@ public class RvInventory {
         return this;
     }
 
+    @Override
     public RvInventory removeColumns(int... indexes) {
         for (int index : indexes) {
             removeColumn(index);
@@ -230,6 +227,7 @@ public class RvInventory {
         return this;
     }
 
+    @Override
     public RvInventory setColumn(int index, RvColumn column) {
         if (columnAmount < index || index < 0) return this;
 
@@ -243,6 +241,7 @@ public class RvInventory {
         return this;
     }
 
+    @Override
     public RvInventory setColumns(RvColumn column, int... indexes) {
         for (int index : indexes) {
             setColumn(index, column);
@@ -250,6 +249,7 @@ public class RvInventory {
         return this;
     }
 
+    @Override
     public RvRow getRow(int index) {
         if (rowAmount < index || index < 0) return null;
         RvRow rvRow = new RvRow();
@@ -263,10 +263,12 @@ public class RvInventory {
         return rvRow;
     }
 
+    @Override
     public List<RvRow> getRows(int... indexes) {
         return Arrays.stream(indexes).mapToObj(this::getRow).collect(Collectors.toList());
     }
 
+    @Override
     public RvColumn getColumn(int index) {
         if (columnAmount < index || index < 0) return null;
         RvColumn rvColumn = new RvColumn();
@@ -280,12 +282,12 @@ public class RvInventory {
         return rvColumn;
     }
 
+    @Override
     public List<RvColumn> getColumns(int... indexes) {
         return Arrays.stream(indexes).mapToObj(this::getColumn).collect(Collectors.toList());
     }
 
-
-    // BOOLEAN RETURNED METHODS AND COLUMN AND ROWS
+    @Override
     public boolean isRowEmpty(int index) {
         if (rowAmount < index || index < 0) return false;
 
@@ -302,6 +304,7 @@ public class RvInventory {
         return !found;
     }
 
+    @Override
     public boolean isRowsEmpty(int... indexes) {
         for (int index : indexes) {
             if (!isRowEmpty(index)) return false;
@@ -309,6 +312,7 @@ public class RvInventory {
         return true;
     }
 
+    @Override
     public boolean isColumnEmpty(int index) {
         if (rowAmount < index || index < 0) return false;
 
@@ -325,6 +329,7 @@ public class RvInventory {
         return !found;
     }
 
+    @Override
     public boolean isColumnsEmpty(int... indexes) {
         for (int index : indexes) {
             if (!isColumnEmpty(index)) return false;
@@ -333,7 +338,7 @@ public class RvInventory {
     }
 
 
-    // USEFULL FEATURES
+    @Override
     public RvInventory setTitle(String title) {
         Inventory newInventory = Bukkit.createInventory(inventory.getHolder(), inventory.getSize(), title);
         newInventory.setContents(newInventory.getContents());
@@ -341,6 +346,7 @@ public class RvInventory {
         return this;
     }
 
+    @Override
     public RvInventory fillOut(ItemStack itemStack) {
         List<ItemStack> content = new ArrayList<>(Arrays.asList(getContents()));
         Collections.fill(content, itemStack);
@@ -348,6 +354,7 @@ public class RvInventory {
         return this;
     }
 
+    @Override
     public RvInventory fillOut(ItemStack itemStack, int... indexes) {
         List<ItemStack> content = new ArrayList<>(Arrays.asList(getContents()));
         Collections.fill(content, itemStack);
@@ -358,6 +365,7 @@ public class RvInventory {
         return this;
     }
 
+    @Override
     public RvInventory fillEmptySlots(ItemStack itemStack) {
         for (int i = 0; i < getContents().length; i++) {
             if (getContents()[i] == null || getContents()[i].getType() == Material.AIR) {
@@ -367,9 +375,7 @@ public class RvInventory {
         return this;
     }
 
-
-    // SET ITEM METHODS
-
+    @Override
     public RvInventory setItem(ItemStack itemStack, int... indexes) {
         for (int index : indexes) {
             setItem(index, itemStack);
@@ -377,32 +383,38 @@ public class RvInventory {
         return this;
     }
 
+    @Override
     public RvInventory setItem(int row, int column, ItemStack itemStack) {
         setItem((row * 9) + column, itemStack);
         return this;
     }
 
-    // GET ITEM METHODS
+    @Override
     public ItemStack getItem(int row, int column) {
         return getItem((row * 9) + column);
     }
 
+    @Override
     public List<ItemStack> getItems(int... indexes) {
         return Arrays.stream(indexes).mapToObj(this::getItem).collect(Collectors.toList());
     }
 
+    @Override
     public NBTItem getItemNBT(int row, int column) {
         return new NBTItem(getItem(row, column));
     }
 
+    @Override
     public NBTItem getItemNBT(int index) {
         return new NBTItem(getItem(index));
     }
 
+    @Override
     public List<NBTItem> getItemNBTs(int... indexes) {
         return Arrays.stream(indexes).mapToObj(this::getItemNBT).collect(Collectors.toList());
     }
 
+    @Override
     public int getSlot(ItemStack itemStack) {
         return IntStream.range(0, inventory.getSize())
                 .filter(i -> inventory.getItem(i) != null && inventory.getItem(i).isSimilar(itemStack))
@@ -410,13 +422,14 @@ public class RvInventory {
                 .orElse(-1);
     }
 
-    // SET LAYOUT
+    @Override
     public RvInventory setLayout(RvLayout layout) {
         inventory.clear();
         layout.init(this);
         return this;
     }
 
+    @Override
     public RvInventory setLayouts(RvLayout... layouts) {
         for (RvLayout layout : layouts) {
             layout.init(this);
@@ -424,50 +437,51 @@ public class RvInventory {
         return this;
     }
 
-    // BOOLEAN RETURNED METHODS
-
+    @Override
     public boolean isEqual(Inventory inventory) {
         return this.inventory.equals(inventory);
     }
 
+    @Override
     public boolean isEmpty() {
         return Arrays.stream(getContents())
                 .noneMatch(itemStack -> itemStack.getType() != Material.AIR);
     }
 
-    public boolean isEmpty(int slot) {
+    @Override
+    public boolean isSlotEmpty(int slot) {
         return inventory.getItem(slot).getType() == Material.AIR;
     }
 
+    @Override
     public boolean isFull() {
         return Arrays.stream(getContents())
                 .noneMatch(itemStack -> itemStack.getType() == Material.AIR);
     }
 
-    public boolean isFull(int slot) {
+    @Override
+    public boolean isSlotFull(int slot) {
         return inventory.getItem(slot).getType() != Material.AIR;
     }
 
-    // PLAYER INVENTORY METHODS
-
+    @Override
     public void open(Player player) {
         player.openInventory(inventory);
     }
 
+    @Override
     public void close(Player player) {
         player.closeInventory();
     }
 
+    @Override
     public void update(Player player) {
         player.updateInventory();
     }
 
-    // CONVERT TO INVENTORY
-
     public Inventory build() {
         return inventory;
     }
-
 
     // DEFAULT INVENTORY FEATURES
 
@@ -619,4 +633,5 @@ public class RvInventory {
     public ListIterator<ItemStack> iterator(int index) {
         return inventory.iterator(index);
     }
+
 }
