@@ -30,7 +30,8 @@ public class RvInventory implements
         RvGetItem,
         RvGetSlot,
         RvItemNBT,
-        RvInventoryOpener
+        RvInventoryOpener,
+        RvItemLoader
 {
 
     private Inventory inventory;
