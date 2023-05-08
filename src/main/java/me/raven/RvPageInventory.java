@@ -1,6 +1,10 @@
 package me.raven;
 
+import me.raven.events.InventoryPageListener;
+import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,12 +15,29 @@ import java.util.stream.Collectors;
 public class RvPageInventory {
 
     private List<RvInventory> inventories;
+    private ItemStack nextPage;
+    private ItemStack previousPage;
 
     public RvPageInventory() {
         inventories = new ArrayList<>();
     }
 
     public RvPageInventory(RvInventory... rvInventories) {
+        for (int i = 0; i < rvInventories.length; i++) {
+            if (i + 1 == rvInventories.length) {
+                rvInventories[i].addItemForInventory(previousPage, rvInventories[i - 1].build());
+                break;
+            }
+
+            if (i == 0) {
+                rvInventories[i].addItemForInventory(nextPage, rvInventories[i + 1].build());
+                continue;
+            }
+
+            rvInventories[i].addItemForInventory(previousPage, rvInventories[i - 1].build());
+            rvInventories[i].addItemForInventory(nextPage, rvInventories[i + 1].build());
+        }
+
         inventories = Arrays.asList(rvInventories);
     }
 
@@ -38,6 +59,65 @@ public class RvPageInventory {
         for (int i = 0; i < amount; i++) {
             inventories.add(new RvInventory(inventory));
         }
+    }
+
+    private void initListener(ItemStack nextPage, ItemStack previousPage, JavaPlugin plugin) {
+        this.nextPage = nextPage;
+        this.previousPage = previousPage;
+
+        for (int i = 0; i < inventories.size(); i++) {
+            RvInventory inventory = inventories.get(i);
+
+            if (i + 1 == inventories.size()) {
+                inventory.addItemForInventory(previousPage, inventories.get(i - 1).build());
+                break;
+            }
+
+            if (i == 0) {
+                inventory.addItemForInventory(nextPage, inventories.get(i + 1).build());
+                continue;
+            }
+
+            inventory.addItemForInventory(previousPage, inventories.get(i - 1).build());
+            inventory.addItemForInventory(nextPage, inventories.get(i + 1).build());
+
+            inventory.registerInventoryOpenerAllower(inventories.get(i), plugin);
+        }
+        Bukkit.getServer().getPluginManager().registerEvents(new InventoryPageListener(this), plugin);
+    }
+
+    private void initListener(JavaPlugin plugin) {
+        for (int i = 0; i < inventories.size(); i++) {
+            RvInventory inventory = inventories.get(i);
+
+            if (i + 1 == inventories.size()) {
+                inventory.addItemForInventory(previousPage, inventories.get(i - 1).build());
+                break;
+            }
+
+            if (i == 0) {
+                inventory.addItemForInventory(nextPage, inventories.get(i + 1).build());
+                continue;
+            }
+
+            inventory.addItemForInventory(previousPage, inventories.get(i - 1).build());
+            inventory.addItemForInventory(nextPage, inventories.get(i + 1).build());
+
+            inventory.registerInventoryOpenerAllower(inventories.get(i), plugin);
+        }
+        Bukkit.getServer().getPluginManager().registerEvents(new InventoryPageListener(this), plugin);
+    }
+
+    // NEXT AND PREVIOUS PAGE
+
+    public RvPageInventory setNextPage(ItemStack itemStack) {
+        this.nextPage = itemStack;
+        return this;
+    }
+
+    public RvPageInventory setPreviousPage(ItemStack itemStack) {
+        this.previousPage = itemStack;
+        return this;
     }
 
     // GET FEATURES

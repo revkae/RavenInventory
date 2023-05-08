@@ -3,6 +3,7 @@ package me.raven.Test;
 import me.raven.Custom.RvAllowItemEvent;
 import me.raven.Custom.RvBlockItemEvent;
 import me.raven.Custom.RvInventoryEvent;
+import me.raven.RvInventory;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -12,6 +13,12 @@ import org.bukkit.inventory.ItemStack;
 
 public class DoSomething implements Listener {
 
+    private RvInventory rvInventory;
+
+    public DoSomething() {
+
+    }
+
     @EventHandler
     public void onAllow(RvAllowItemEvent event) {
         InventoryClickEvent clickEvent = event.getEvent();
@@ -20,6 +27,7 @@ public class DoSomething implements Listener {
         Player player = event.getPlayer();
 
         // DO WHAT YOU WANT
+
     }
 
     @EventHandler
@@ -29,7 +37,7 @@ public class DoSomething implements Listener {
         ItemStack trigger = event.getTrigger();
         Player player = event.getPlayer();
 
-        // DO WHAT YOU WANT
+        clickEvent.setCancelled(true);
     }
 
     @EventHandler
@@ -41,5 +49,6 @@ public class DoSomething implements Listener {
         Player player = event.getPlayer();
 
         // DO WHAT YOU WANT
+        player.openInventory(newInventory);
     }
 }

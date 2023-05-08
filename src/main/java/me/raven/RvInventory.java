@@ -70,6 +70,14 @@ public class RvInventory implements
         this.rowAmount = inventory.getSize() / columnAmount;
     }
 
+    public int getColumnAmount() {
+        return columnAmount;
+    }
+
+    public int getRowAmount() {
+        return rowAmount;
+    }
+
     @Override
     public Inventory getItemForInventory(ItemStack itemStack) {
         return inventoryOpener.get(itemStack);
