@@ -1,6 +1,5 @@
 package me.raven.abstracts;
 
-import me.raven.RvColumn;
 import me.raven.RvSlot;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;

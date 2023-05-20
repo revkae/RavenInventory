@@ -10,4 +10,9 @@ public interface RvInventoryOpener {
     RvInventory removeItemForInventory(ItemStack itemStack, Inventory inventory);
     Inventory getItemForInventory(ItemStack itemStack);
     boolean containsItemForInventory(ItemStack itemStack);
+
+    RvInventory addKeyForInventory(String key, Inventory inventory);
+    RvInventory removeKeyForInventory(String key, Inventory inventory);
+    Inventory getKeyForInventory(String key);
+    boolean containsKeyForInventory(String key);
 }

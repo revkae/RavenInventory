@@ -1,10 +1,9 @@
 package me.raven.events;
 
-import de.tr7zw.nbtapi.NBTItem;
-import me.raven.Custom.RvAllowItemEvent;
 import me.raven.Custom.RvBlockItemEvent;
 import me.raven.RvInventory;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -23,14 +22,14 @@ public class KeyBlockListener implements Listener {
     @EventHandler
     public void onClick(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
-        RvInventory clickedInv = new RvInventory(event.getClickedInventory());
+        Inventory clickedInv = event.getClickedInventory();
         ItemStack clickedItem = event.getCurrentItem();
 
-        if (!rvInventory.isInventoryNull()) return;
+        if (clickedInv == null) return;
 
-        if (!rvInventory.isSameInventory(clickedInv.build())) return;
+        if (clickedItem == null || clickedItem.getType() == Material.AIR) return;
 
-        if (!rvInventory.isItemNull(clickedItem)) return;
+        if (!clickedInv.equals(rvInventory.build())) return;
 
         if (!rvInventory.hasBlockedKey(clickedItem)) return;
 

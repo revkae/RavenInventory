@@ -3,10 +3,12 @@ package me.raven.events;
 import me.raven.Custom.RvAllowItemEvent;
 import me.raven.RvInventory;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 public class KeyAllowListener implements Listener {
@@ -19,15 +21,15 @@ public class KeyAllowListener implements Listener {
 
     @EventHandler
     public void onClick(InventoryClickEvent event) {
-        RvInventory clickedInv = new RvInventory(event.getClickedInventory());
+        Inventory clickedInv = event.getClickedInventory();
         ItemStack clickedItem = event.getCurrentItem();
         Player player = (Player) event.getWhoClicked();
 
-        if (!rvInventory.isInventoryNull()) return;
+        if (clickedInv == null) return;
 
-        if (!rvInventory.isSameInventory(clickedInv.build())) return;
+        if (clickedItem == null || clickedItem.getType() == Material.AIR) return;
 
-        if (!rvInventory.isItemNull(clickedItem)) return;
+        if (!clickedInv.equals(rvInventory.build())) return;
 
         if (!rvInventory.hasAllowedKey(clickedItem)) return;
 

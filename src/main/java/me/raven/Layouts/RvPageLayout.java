@@ -9,12 +9,7 @@ import org.bukkit.inventory.ItemStack;
 public class RvPageLayout implements RvLayout {
 
     @Override
-    public String title() {
-        return "Page";
-    }
-
-    @Override
-    public void setup(RvInventory rvInventory) {
+    public void Setup(RvInventory rvInventory) {
         NBTItem next = new NBTItem(new ItemStack(Material.ARROW), true);
         next.setString("NEXT", "nothing");
 
@@ -23,5 +18,10 @@ public class RvPageLayout implements RvLayout {
 
         rvInventory.setItem(rvInventory.getRowAmount() - 1, rvInventory.getColumnAmount() - 1, next.getItem());
         rvInventory.setItem(0, rvInventory.getColumnAmount() - 1, next.getItem());
+    }
+
+    @Override
+    public String Title() {
+        return RvLayout.super.Title();
     }
 }

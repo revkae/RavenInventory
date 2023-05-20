@@ -14,31 +14,33 @@ import java.util.stream.Collectors;
 
 public class RvPageInventory {
 
-    private List<RvInventory> inventories;
+    private List<RvInventory> inventories = new ArrayList<>();
     private ItemStack nextPage;
     private ItemStack previousPage;
 
-    public RvPageInventory() {
-        inventories = new ArrayList<>();
-    }
+//    public RvPageInventory(RvInventory... rvInventories) {
+//        for (int i = 0; i < rvInventories.length; i++) {
+//            if (i + 1 == rvInventories.length) {
+//                rvInventories[i].addItemForInventory(previousPage, rvInventories[i - 1].build());
+//                break;
+//            }
+//
+//            if (i == 0) {
+//                rvInventories[i].addItemForInventory(nextPage, rvInventories[i + 1].build());
+//                continue;
+//            }
+//
+//            rvInventories[i].addItemForInventory(previousPage, rvInventories[i - 1].build());
+//            rvInventories[i].addItemForInventory(nextPage, rvInventories[i + 1].build());
+//        }
+//
+//        inventories = Arrays.asList(rvInventories);
+//    }
+
+    public RvPageInventory() {}
 
     public RvPageInventory(RvInventory... rvInventories) {
-        for (int i = 0; i < rvInventories.length; i++) {
-            if (i + 1 == rvInventories.length) {
-                rvInventories[i].addItemForInventory(previousPage, rvInventories[i - 1].build());
-                break;
-            }
-
-            if (i == 0) {
-                rvInventories[i].addItemForInventory(nextPage, rvInventories[i + 1].build());
-                continue;
-            }
-
-            rvInventories[i].addItemForInventory(previousPage, rvInventories[i - 1].build());
-            rvInventories[i].addItemForInventory(nextPage, rvInventories[i + 1].build());
-        }
-
-        inventories = Arrays.asList(rvInventories);
+        this.inventories.addAll(Arrays.asList(rvInventories));
     }
 
     public RvPageInventory(Inventory... inventories) {
@@ -61,7 +63,7 @@ public class RvPageInventory {
         }
     }
 
-    private void initListener(ItemStack nextPage, ItemStack previousPage, JavaPlugin plugin) {
+    public RvPageInventory initListener(ItemStack nextPage, ItemStack previousPage, JavaPlugin plugin) {
         this.nextPage = nextPage;
         this.previousPage = previousPage;
 
@@ -84,9 +86,10 @@ public class RvPageInventory {
             inventory.registerInventoryOpenerAllower(inventories.get(i), plugin);
         }
         Bukkit.getServer().getPluginManager().registerEvents(new InventoryPageListener(this), plugin);
+        return this;
     }
 
-    private void initListener(JavaPlugin plugin) {
+    public RvPageInventory initListener(JavaPlugin plugin) {
         for (int i = 0; i < inventories.size(); i++) {
             RvInventory inventory = inventories.get(i);
 
@@ -106,16 +109,17 @@ public class RvPageInventory {
             inventory.registerInventoryOpenerAllower(inventories.get(i), plugin);
         }
         Bukkit.getServer().getPluginManager().registerEvents(new InventoryPageListener(this), plugin);
+        return this;
     }
 
     // NEXT AND PREVIOUS PAGE
 
-    public RvPageInventory setNextPage(ItemStack itemStack) {
+    public RvPageInventory setNextButton(ItemStack itemStack) {
         this.nextPage = itemStack;
         return this;
     }
 
-    public RvPageInventory setPreviousPage(ItemStack itemStack) {
+    public RvPageInventory setPreviousButton(ItemStack itemStack) {
         this.previousPage = itemStack;
         return this;
     }
@@ -229,9 +233,10 @@ public class RvPageInventory {
     public RvInventory nextPage(RvInventory rvInventory) {
         int page = -1;
         for (int i = 0; i < inventories.size(); i++) {
-            if (!inventories.get(i).equals(rvInventory)) continue;
-
-            page = i;
+            if (inventories.get(i).build().equals(rvInventory.build())) {
+                page = i;
+                break;
+            }
         }
 
         if (page == -1) {
@@ -248,9 +253,10 @@ public class RvPageInventory {
     public RvInventory previousPage(RvInventory rvInventory) {
         int page = -1;
         for (int i = 0; i < inventories.size(); i++) {
-            if (!inventories.get(i).equals(rvInventory)) continue;
-
-            page = i;
+            if (inventories.get(i).build().equals(rvInventory.build())) {
+                page = i;
+                break;
+            }
         }
 
         if (page == -1) {

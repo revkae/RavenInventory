@@ -1,5 +1,7 @@
 package me.raven;
 
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import de.tr7zw.nbtapi.NBTItem;
 import me.raven.Interfaces.*;
 import org.bukkit.Bukkit;
@@ -31,19 +33,21 @@ public class RvInventory implements
         RvGetSlot,
         RvItemNBT,
         RvInventoryOpener,
-        RvItemLoader
+        RvItemLoader,
+        Cloneable
 {
 
     private Inventory inventory;
     private final int rowAmount;
     private final int columnAmount = 9;
-    private final List<ItemStack> blockedItems = new ArrayList<>();
-    private final List<String> blockedKeys = new ArrayList<>();
+    private final Set<ItemStack> blockedItems = Sets.newHashSet();
+    private final Set<String> blockedKeys = Sets.newHashSet();
 
-    private final List<ItemStack> allowedItems = new ArrayList<>();
-    private final List<String> allowedKeys = new ArrayList<>();
+    private final Set<ItemStack> allowedItems = Sets.newHashSet();
+    private final Set<String> allowedKeys = Sets.newHashSet();
 
-    private final Map<ItemStack, Inventory> inventoryOpener = new HashMap<>();
+    private final Map<ItemStack, Inventory> inventoryOpener = Maps.newHashMap();
+    private final Map<String, Inventory> inventoryPerKey = Maps.newHashMap();
 
     public RvInventory(Inventory inventory) {
         this.inventory = inventory;
@@ -105,6 +109,32 @@ public class RvInventory implements
     }
 
     @Override
+    public RvInventory addKeyForInventory(String key, Inventory inventory) {
+        if (inventoryPerKey.containsKey(key)) return this;
+
+        inventoryPerKey.put(key, inventory);
+        return this;
+    }
+
+    @Override
+    public RvInventory removeKeyForInventory(String key, Inventory inventory) {
+        if (!inventoryPerKey.containsKey(key)) return this;
+
+        inventoryPerKey.remove(key);
+        return this;
+    }
+
+    @Override
+    public Inventory getKeyForInventory(String key) {
+        return inventoryPerKey.get(key);
+    }
+
+    @Override
+    public boolean containsKeyForInventory(String key) {
+        return inventoryPerKey.containsKey(key);
+    }
+
+    @Override
     public void addBlockedItem(ItemStack itemStack) {
         if (blockedItems.contains(itemStack)) return;
 
@@ -134,7 +164,10 @@ public class RvInventory implements
 
     @Override
     public boolean hasBlockedKey(ItemStack itemStack) {
-        return new NBTItem(itemStack).getKeys().stream().anyMatch(blockedKeys::contains);
+        NBTItem nbtItem = new NBTItem(itemStack);
+        if (nbtItem.getKeys() == null || nbtItem.getKeys().isEmpty())
+            return false;
+        return nbtItem.getKeys().stream().anyMatch(blockedKeys::contains);
     }
 
     @Override
@@ -177,7 +210,10 @@ public class RvInventory implements
 
     @Override
     public boolean hasAllowedKey(ItemStack itemStack) {
-        return new NBTItem(itemStack).getKeys().stream().anyMatch(allowedKeys::contains);
+        NBTItem nbtItem = new NBTItem(itemStack);
+        if (nbtItem.getKeys() == null || nbtItem.getKeys().isEmpty())
+            return false;
+        return nbtItem.getKeys().stream().anyMatch(allowedKeys::contains);
     }
 
     @Override
@@ -377,26 +413,23 @@ public class RvInventory implements
     @Override
     public RvInventory setTitle(String title) {
         Inventory newInventory = Bukkit.createInventory(inventory.getHolder(), inventory.getSize(), title);
-        newInventory.setContents(newInventory.getContents());
+        newInventory.setContents(inventory.getContents());
         inventory = newInventory;
         return this;
     }
 
     @Override
     public RvInventory fillOut(ItemStack itemStack) {
-        List<ItemStack> content = new ArrayList<>(Arrays.asList(getContents()));
-        Collections.fill(content, itemStack);
-        setContents((ItemStack[]) content.toArray());
+        for (int i = 0; i < inventory.getSize(); i++) {
+            inventory.setItem(i, itemStack);
+        }
         return this;
     }
 
     @Override
     public RvInventory fillOut(ItemStack itemStack, int... indexes) {
-        List<ItemStack> content = new ArrayList<>(Arrays.asList(getContents()));
-        Collections.fill(content, itemStack);
-        setContents((ItemStack[]) content.toArray());
         for (int index : indexes) {
-            setItem(index, new ItemStack(Material.AIR));
+            inventory.setItem(index, itemStack);
         }
         return this;
     }
@@ -459,16 +492,25 @@ public class RvInventory implements
     }
 
     @Override
+    public int getSlot(String key) {
+        return IntStream.range(0, inventory.getSize())
+                .filter(i -> inventory.getItem(i) != null && inventory.getItem(i).getType() != Material.AIR)
+                .filter(i -> new NBTItem(inventory.getItem(i)).hasKey(key))
+                .findFirst()
+                .orElse(-1);
+    }
+
+    @Override
     public RvInventory setLayout(RvLayout layout) {
         inventory.clear();
-        layout.init(this);
+        layout.Init(this);
         return this;
     }
 
     @Override
     public RvInventory setLayouts(RvLayout... layouts) {
         for (RvLayout layout : layouts) {
-            layout.init(this);
+            layout.Init(this);
         }
         return this;
     }
@@ -513,6 +555,16 @@ public class RvInventory implements
     @Override
     public void update(Player player) {
         player.updateInventory();
+    }
+
+    public RvInventory clone() {
+        RvInventory clone;
+        try {
+            clone = (RvInventory) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
+        return clone;
     }
 
     public Inventory build() {
