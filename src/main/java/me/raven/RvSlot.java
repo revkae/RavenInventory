@@ -5,7 +5,6 @@ import org.bukkit.inventory.ItemStack;
 public class RvSlot {
 
     private int slot;
-
     private ItemStack itemStack;
 
     public RvSlot(int slot, ItemStack itemStack) {

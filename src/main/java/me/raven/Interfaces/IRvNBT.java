@@ -4,7 +4,7 @@ import de.tr7zw.nbtapi.NBTItem;
 
 import java.util.List;
 
-public interface RvItemNBT {
+public interface IRvNBT {
 
     NBTItem getItemNBT(int row, int column);
 

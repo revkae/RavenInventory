@@ -1,11 +1,11 @@
 package me.raven;
 
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 import de.tr7zw.nbtapi.NBTItem;
+import me.raven.Features.*;
 import me.raven.Interfaces.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
@@ -18,202 +18,76 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class RvInventory implements
-        RvItemBlocker,
-        RvKeyBlocker,
-        RvItemAllower,
-        RvKeyAllower,
-        RvListenerRegisterer,
         RvListenerHelper,
-        RvRowHelper,
-        RvColumnHelper,
-        RvUsefullFeatures,
         RvLayoutMethods,
         RvSetItem,
         RvGetItem,
         RvGetSlot,
-        RvItemNBT,
-        RvInventoryOpener,
-        RvItemLoader,
         Cloneable
 {
 
     private Inventory inventory;
-    private final int rowAmount;
-    private final int columnAmount = 9;
-    private final Set<ItemStack> blockedItems = Sets.newHashSet();
-    private final Set<String> blockedKeys = Sets.newHashSet();
-
-    private final Set<ItemStack> allowedItems = Sets.newHashSet();
-    private final Set<String> allowedKeys = Sets.newHashSet();
-
-    private final Map<ItemStack, Inventory> inventoryOpener = Maps.newHashMap();
-    private final Map<String, Inventory> inventoryPerKey = Maps.newHashMap();
+    private RvGrid grid = new RvGrid(this);
+    private RvListener listener = new RvListener(this);
+    private RvKey key = new RvKey(this);
+    private RvNBT nbt = new RvNBT(this);
+    private RvExtra extra = new RvExtra(this);
 
     public RvInventory(Inventory inventory) {
         this.inventory = inventory;
-        this.rowAmount = inventory.getSize() / columnAmount;
     }
 
     public RvInventory(InventoryHolder holder, InventoryType type) {
         this.inventory = Bukkit.createInventory(holder, type);
-        this.rowAmount = inventory.getSize() / columnAmount;
     }
 
     public RvInventory(InventoryHolder holder, InventoryType type, String title) {
         this.inventory = Bukkit.createInventory(holder, type, title);
-        this.rowAmount = inventory.getSize() / columnAmount;
     }
 
     public RvInventory(InventoryHolder holder, int size) {
         this.inventory = Bukkit.createInventory(holder, size);
-        this.rowAmount = inventory.getSize() / columnAmount;
     }
 
     public RvInventory(InventoryHolder holder, int size, String title) {
         this.inventory = Bukkit.createInventory(holder, size, title);
-        this.rowAmount = inventory.getSize() / columnAmount;
     }
 
-    public int getColumnAmount() {
-        return columnAmount;
-    }
-
-    public int getRowAmount() {
-        return rowAmount;
-    }
-
-    @Override
-    public Inventory getItemForInventory(ItemStack itemStack) {
-        return inventoryOpener.get(itemStack);
-    }
-
-    @Override
-    public RvInventory addItemForInventory(ItemStack itemStack, Inventory inventory) {
-        if (inventoryOpener.containsKey(itemStack)) return this;
-
-        inventoryOpener.put(itemStack, inventory);
+    public RvInventory setInventory(Inventory inventory) {
+        this.inventory = inventory;
         return this;
     }
 
-    @Override
-    public RvInventory removeItemForInventory(ItemStack itemStack, Inventory inventory) {
-        if (!inventoryOpener.containsKey(itemStack)) return this;
-
-        inventoryOpener.remove(itemStack);
-        return this;
+    public Inventory getInventory() {
+        return inventory;
     }
 
-    @Override
-    public boolean containsItemForInventory(ItemStack itemStack) {
-        return inventoryOpener.containsKey(itemStack);
+    public RvGrid getGrid() {
+        return grid;
     }
 
-    @Override
-    public RvInventory addKeyForInventory(String key, Inventory inventory) {
-        if (inventoryPerKey.containsKey(key)) return this;
-
-        inventoryPerKey.put(key, inventory);
-        return this;
+    public RvListener getListener() {
+        return listener;
     }
 
-    @Override
-    public RvInventory removeKeyForInventory(String key, Inventory inventory) {
-        if (!inventoryPerKey.containsKey(key)) return this;
-
-        inventoryPerKey.remove(key);
-        return this;
+    public RvKey getKey() {
+        return key;
     }
 
-    @Override
-    public Inventory getKeyForInventory(String key) {
-        return inventoryPerKey.get(key);
+    public RvNBT getNBT() {
+        return nbt;
     }
 
-    @Override
-    public boolean containsKeyForInventory(String key) {
-        return inventoryPerKey.containsKey(key);
+    public RvExtra getExtra() {
+        return extra;
     }
 
-    @Override
-    public void addBlockedItem(ItemStack itemStack) {
-        if (blockedItems.contains(itemStack)) return;
-
-        blockedItems.add(itemStack);
-    }
-
-    @Override
-    public void removeBlockedItem(ItemStack itemStack) {
-        if (!blockedItems.contains(itemStack)) return;
-
-        blockedItems.remove(itemStack);
-    }
-
-    @Override
-    public void addBlockedKey(String key) {
-        if (blockedKeys.contains(key)) return;
-
-        blockedKeys.add(key);
-    }
-
-    @Override
-    public void removeBlockedKey(String key) {
-        if (!blockedKeys.contains(key)) return;
-
-        blockedKeys.remove(key);
-    }
-
-    @Override
-    public boolean hasBlockedKey(ItemStack itemStack) {
-        NBTItem nbtItem = new NBTItem(itemStack);
-        if (nbtItem.getKeys() == null || nbtItem.getKeys().isEmpty())
-            return false;
-        return nbtItem.getKeys().stream().anyMatch(blockedKeys::contains);
-    }
-
-    @Override
-    public boolean hasBlockedItem(ItemStack itemStack) {
-        return blockedItems.contains(itemStack);
-    }
-
-    @Override
-    public void addAllowedItem(ItemStack itemStack) {
-        if (allowedItems.contains(itemStack)) return;
-
-        allowedItems.add(itemStack);
-    }
-
-    @Override
-    public void removeAllowedItem(ItemStack itemStack) {
-        if (!allowedItems.contains(itemStack)) return;
-
-        allowedItems.remove(itemStack);
-    }
-
-    @Override
-    public boolean hasAllowedItem(ItemStack itemStack) {
-        return allowedItems.contains(itemStack);
-    }
-
-    @Override
-    public void addAllowedKey(String key) {
-        if (allowedKeys.contains(key)) return;
-
-        allowedKeys.add(key);
-    }
-
-    @Override
-    public void removeAllowedKey(String key) {
-        if (!allowedKeys.contains(key)) return;
-
-        allowedKeys.remove(key);
-    }
-
-    @Override
-    public boolean hasAllowedKey(ItemStack itemStack) {
-        NBTItem nbtItem = new NBTItem(itemStack);
-        if (nbtItem.getKeys() == null || nbtItem.getKeys().isEmpty())
-            return false;
-        return nbtItem.getKeys().stream().anyMatch(allowedKeys::contains);
+    public RvItemLoader getItemLoader(ConfigurationSection section,
+                                      String name,
+                                      String material,
+                                      String data,
+                                      String lore) {
+        return new RvItemLoader(this, section, name, material, lore, data);
     }
 
     @Override
@@ -229,219 +103,6 @@ public class RvInventory implements
     @Override
     public boolean isItemNull(ItemStack itemStack) {
         return !(itemStack == null || itemStack.getType() == Material.AIR);
-    }
-
-    @Override
-    public RvInventory removeRow(int index) {
-        if (index > rowAmount || index < 0) return this;
-
-        int startSlot = index * columnAmount;
-        int endSlot = startSlot + columnAmount;
-
-        int num = 0;
-        for (int j = startSlot; j < endSlot; j++) {
-            inventory.setItem(j, new ItemStack(Material.AIR));
-            num++;
-        }
-        return this;
-    }
-
-    @Override
-    public RvInventory removeRows(int... indexes) {
-        for (int index : indexes) {
-            removeRow(index);
-        }
-        return this;
-    }
-
-    @Override
-    public RvInventory setRow(int index, RvRow row) {
-        if (index > rowAmount || index < 0) return this;
-
-        int startSlot = index * columnAmount;
-        int endSlot = startSlot + columnAmount;
-
-        int num = 0;
-        for (int j = startSlot; j < endSlot; j++) {
-            inventory.setItem(j, row.getItem(num));
-            num++;
-        }
-        return this;
-    }
-
-    @Override
-    public RvInventory setRows(RvRow row, int... indexes) {
-        for (int index : indexes) {
-            setRow(index, row);
-        }
-        return this;
-    }
-
-    @Override
-    public RvInventory removeColumn(int index) {
-        if (columnAmount < index || index < 0) return this;
-
-        int startSlot = index;
-        int endSlot = rowAmount * columnAmount;
-        int num = 0;
-        for (int j = startSlot; j < endSlot; j+=9) {
-            inventory.setItem(j, new ItemStack(Material.AIR));
-            num++;
-        }
-        return this;
-    }
-
-    @Override
-    public RvInventory removeColumns(int... indexes) {
-        for (int index : indexes) {
-            removeColumn(index);
-        }
-        return this;
-    }
-
-    @Override
-    public RvInventory setColumn(int index, RvColumn column) {
-        if (columnAmount < index || index < 0) return this;
-
-        int startSlot = index;
-        int endSlot = rowAmount * columnAmount;
-        int num = 0;
-        for (int j = startSlot; j < endSlot; j+=9) {
-            inventory.setItem(j, column.getItem(num));
-            num++;
-        }
-        return this;
-    }
-
-    @Override
-    public RvInventory setColumns(RvColumn column, int... indexes) {
-        for (int index : indexes) {
-            setColumn(index, column);
-        }
-        return this;
-    }
-
-    @Override
-    public RvRow getRow(int index) {
-        if (rowAmount < index || index < 0) return null;
-        RvRow rvRow = new RvRow();
-        int startSlot = index * columnAmount;
-        int endSlot = startSlot + columnAmount;
-        int num = 0;
-        for (int j = startSlot; j < endSlot; j++) {
-            rvRow.setItem(num, inventory.getItem(j));
-            num++;
-        }
-        return rvRow;
-    }
-
-    @Override
-    public List<RvRow> getRows(int... indexes) {
-        return Arrays.stream(indexes).mapToObj(this::getRow).collect(Collectors.toList());
-    }
-
-    @Override
-    public RvColumn getColumn(int index) {
-        if (columnAmount < index || index < 0) return null;
-        RvColumn rvColumn = new RvColumn();
-        int startSlot = index;
-        int endSlot = rowAmount * columnAmount;
-        int num = 0;
-        for (int j = startSlot; j < endSlot; j+=9) {
-            rvColumn.setItem(num, inventory.getItem(j));
-            num++;
-        }
-        return rvColumn;
-    }
-
-    @Override
-    public List<RvColumn> getColumns(int... indexes) {
-        return Arrays.stream(indexes).mapToObj(this::getColumn).collect(Collectors.toList());
-    }
-
-    @Override
-    public boolean isRowEmpty(int index) {
-        if (rowAmount < index || index < 0) return false;
-
-        int startSlot = index * columnAmount;
-        int endSlot = startSlot + columnAmount;
-
-        boolean found = false;
-        for (int j = startSlot; j < endSlot; j++) {
-            if (inventory.getItem(j).getType() == Material.AIR) continue;
-
-            found = true;
-        }
-
-        return !found;
-    }
-
-    @Override
-    public boolean isRowsEmpty(int... indexes) {
-        for (int index : indexes) {
-            if (!isRowEmpty(index)) return false;
-        }
-        return true;
-    }
-
-    @Override
-    public boolean isColumnEmpty(int index) {
-        if (rowAmount < index || index < 0) return false;
-
-        int startSlot = index;
-        int endSlot = rowAmount * columnAmount;
-
-        boolean found = false;
-        for (int j = startSlot; j < endSlot; j++) {
-            if (inventory.getItem(j).getType() == Material.AIR) continue;
-
-            found = true;
-        }
-
-        return !found;
-    }
-
-    @Override
-    public boolean isColumnsEmpty(int... indexes) {
-        for (int index : indexes) {
-            if (!isColumnEmpty(index)) return false;
-        }
-        return true;
-    }
-
-
-    @Override
-    public RvInventory setTitle(String title) {
-        Inventory newInventory = Bukkit.createInventory(inventory.getHolder(), inventory.getSize(), title);
-        newInventory.setContents(inventory.getContents());
-        inventory = newInventory;
-        return this;
-    }
-
-    @Override
-    public RvInventory fillOut(ItemStack itemStack) {
-        for (int i = 0; i < inventory.getSize(); i++) {
-            inventory.setItem(i, itemStack);
-        }
-        return this;
-    }
-
-    @Override
-    public RvInventory fillOut(ItemStack itemStack, int... indexes) {
-        for (int index : indexes) {
-            inventory.setItem(index, itemStack);
-        }
-        return this;
-    }
-
-    @Override
-    public RvInventory fillEmptySlots(ItemStack itemStack) {
-        for (int i = 0; i < getContents().length; i++) {
-            if (getContents()[i] == null || getContents()[i].getType() == Material.AIR) {
-                setItem(i, itemStack);
-            }
-        }
-        return this;
     }
 
     @Override
@@ -466,21 +127,6 @@ public class RvInventory implements
     @Override
     public List<ItemStack> getItems(int... indexes) {
         return Arrays.stream(indexes).mapToObj(this::getItem).collect(Collectors.toList());
-    }
-
-    @Override
-    public NBTItem getItemNBT(int row, int column) {
-        return new NBTItem(getItem(row, column));
-    }
-
-    @Override
-    public NBTItem getItemNBT(int index) {
-        return new NBTItem(getItem(index));
-    }
-
-    @Override
-    public List<NBTItem> getItemNBTs(int... indexes) {
-        return Arrays.stream(indexes).mapToObj(this::getItemNBT).collect(Collectors.toList());
     }
 
     @Override
@@ -513,48 +159,6 @@ public class RvInventory implements
             layout.Init(this);
         }
         return this;
-    }
-
-    @Override
-    public boolean isEqual(Inventory inventory) {
-        return this.inventory.equals(inventory);
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return Arrays.stream(getContents())
-                .noneMatch(itemStack -> itemStack.getType() != Material.AIR);
-    }
-
-    @Override
-    public boolean isSlotEmpty(int slot) {
-        return inventory.getItem(slot).getType() == Material.AIR;
-    }
-
-    @Override
-    public boolean isFull() {
-        return Arrays.stream(getContents())
-                .noneMatch(itemStack -> itemStack.getType() == Material.AIR);
-    }
-
-    @Override
-    public boolean isSlotFull(int slot) {
-        return inventory.getItem(slot).getType() != Material.AIR;
-    }
-
-    @Override
-    public void open(Player player) {
-        player.openInventory(inventory);
-    }
-
-    @Override
-    public void close(Player player) {
-        player.closeInventory();
-    }
-
-    @Override
-    public void update(Player player) {
-        player.updateInventory();
     }
 
     public RvInventory clone() {

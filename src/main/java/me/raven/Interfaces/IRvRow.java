@@ -7,7 +7,7 @@ import me.raven.RvRow;
 
 import java.util.List;
 
-public interface RvRowHelper {
+public interface IRvRow {
 
     RvInventory removeRow(int index);
 

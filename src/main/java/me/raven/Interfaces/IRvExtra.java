@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-public interface RvUsefullFeatures {
+public interface IRvExtra {
 
     RvInventory setTitle(String title);
     RvInventory fillOut(ItemStack itemStack);

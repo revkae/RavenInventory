@@ -1,4 +1,4 @@
-package me.raven.events;
+package me.raven.Events;
 
 import me.raven.Custom.RvBlockItemEvent;
 import me.raven.RvInventory;
@@ -31,7 +31,7 @@ public class KeyBlockListener implements Listener {
 
         if (!clickedInv.equals(rvInventory.build())) return;
 
-        if (!rvInventory.hasBlockedKey(clickedItem)) return;
+        if (!rvInventory.getKey().hasBlockedKey(clickedItem)) return;
 
         Bukkit.getServer().getPluginManager().callEvent(new RvBlockItemEvent(player, clickedItem, event.getClickedInventory(), event));
     }

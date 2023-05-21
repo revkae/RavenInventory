@@ -1,4 +1,4 @@
-package me.raven.events;
+package me.raven.Events;
 
 import me.raven.Custom.RvAllowItemEvent;
 import me.raven.RvInventory;
@@ -31,7 +31,7 @@ public class KeyAllowListener implements Listener {
 
         if (!clickedInv.equals(rvInventory.build())) return;
 
-        if (!rvInventory.hasAllowedKey(clickedItem)) return;
+        if (!rvInventory.getKey().hasAllowedKey(clickedItem)) return;
 
         Bukkit.getServer().getPluginManager().callEvent(new RvAllowItemEvent(player, clickedItem, event.getClickedInventory(), event));
     }

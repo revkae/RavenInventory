@@ -1,9 +1,9 @@
 package me.raven;
 
-import me.raven.abstracts.RvArrangement;
+import me.raven.abstracts.ARvGrid;
 import org.bukkit.inventory.ItemStack;
 
-public class RvRow extends RvArrangement {
+public class RvRow extends ARvGrid {
 
     public RvRow() {
         super();

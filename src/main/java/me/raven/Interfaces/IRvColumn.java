@@ -6,7 +6,7 @@ import me.raven.RvInventory;
 
 import java.util.List;
 
-public interface RvColumnHelper {
+public interface IRvColumn {
 
     RvInventory removeColumn(int index);
     RvInventory removeColumns(int... indexes);

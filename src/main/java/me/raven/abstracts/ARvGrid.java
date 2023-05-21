@@ -10,15 +10,15 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public abstract class RvArrangement {
+public abstract class ARvGrid {
 
     public List<ItemStack> arrangement;
 
-    public RvArrangement() {
+    public ARvGrid() {
         arrangement = new ArrayList<>();
     }
 
-    public RvArrangement(ItemStack... items) {
+    public ARvGrid(ItemStack... items) {
         List<ItemStack> itemStacks = new ArrayList<>(Arrays.asList(items));
         while (itemStacks.size() != 9) {
             itemStacks.add(new ItemStack(Material.AIR));
@@ -27,7 +27,7 @@ public abstract class RvArrangement {
         arrangement = itemStacks;
     }
 
-    public RvArrangement(RvSlot... items) {
+    public ARvGrid(RvSlot... items) {
         arrangement = new ArrayList<>(Collections.nCopies(9, new ItemStack(Material.AIR)));
 
         for (RvSlot item : items) {
