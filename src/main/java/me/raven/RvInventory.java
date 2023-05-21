@@ -17,14 +17,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class RvInventory implements
-        RvListenerHelper,
-        RvLayoutMethods,
-        RvSetItem,
-        RvGetItem,
-        RvGetSlot,
-        Cloneable
-{
+public class RvInventory implements Cloneable {
 
     private Inventory inventory;
     private RvGrid grid = new RvGrid(this);
@@ -90,22 +83,18 @@ public class RvInventory implements
         return new RvItemLoader(this, section, name, material, lore, data);
     }
 
-    @Override
     public boolean isInventoryNull() {
         return inventory == null;
     }
 
-    @Override
     public boolean isSameInventory(Inventory inventory) {
         return this.inventory.equals(inventory);
     }
 
-    @Override
     public boolean isItemNull(ItemStack itemStack) {
         return !(itemStack == null || itemStack.getType() == Material.AIR);
     }
 
-    @Override
     public RvInventory setItem(ItemStack itemStack, int... indexes) {
         for (int index : indexes) {
             setItem(index, itemStack);
@@ -113,23 +102,19 @@ public class RvInventory implements
         return this;
     }
 
-    @Override
     public RvInventory setItem(int row, int column, ItemStack itemStack) {
         setItem((row * 9) + column, itemStack);
         return this;
     }
 
-    @Override
     public ItemStack getItem(int row, int column) {
         return getItem((row * 9) + column);
     }
 
-    @Override
     public List<ItemStack> getItems(int... indexes) {
         return Arrays.stream(indexes).mapToObj(this::getItem).collect(Collectors.toList());
     }
 
-    @Override
     public int getSlot(ItemStack itemStack) {
         return IntStream.range(0, inventory.getSize())
                 .filter(i -> inventory.getItem(i) != null && inventory.getItem(i).isSimilar(itemStack))
@@ -137,7 +122,6 @@ public class RvInventory implements
                 .orElse(-1);
     }
 
-    @Override
     public int getSlot(String key) {
         return IntStream.range(0, inventory.getSize())
                 .filter(i -> inventory.getItem(i) != null && inventory.getItem(i).getType() != Material.AIR)
@@ -146,14 +130,12 @@ public class RvInventory implements
                 .orElse(-1);
     }
 
-    @Override
     public RvInventory setLayout(RvLayout layout) {
         inventory.clear();
         layout.Init(this);
         return this;
     }
 
-    @Override
     public RvInventory setLayouts(RvLayout... layouts) {
         for (RvLayout layout : layouts) {
             layout.Init(this);
