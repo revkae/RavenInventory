@@ -2,12 +2,11 @@ package me.raven;
 
 import de.tr7zw.nbtapi.NBTItem;
 import me.raven.Features.*;
-import me.raven.Interfaces.*;
+import me.raven.Interfaces.IRvLayout;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.HumanEntity;
-import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
@@ -130,14 +129,14 @@ public class RvInventory implements Cloneable {
                 .orElse(-1);
     }
 
-    public RvInventory setLayout(RvLayout layout) {
+    public RvInventory setLayout(IRvLayout layout) {
         inventory.clear();
         layout.Init(this);
         return this;
     }
 
-    public RvInventory setLayouts(RvLayout... layouts) {
-        for (RvLayout layout : layouts) {
+    public RvInventory setLayouts(IRvLayout... layouts) {
+        for (IRvLayout layout : layouts) {
             layout.Init(this);
         }
         return this;

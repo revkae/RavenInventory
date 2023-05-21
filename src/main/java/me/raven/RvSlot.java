@@ -1,7 +1,11 @@
 package me.raven;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.inventory.ItemStack;
 
+@Getter
+@Setter
 public class RvSlot {
 
     private int slot;
@@ -10,13 +14,5 @@ public class RvSlot {
     public RvSlot(int slot, ItemStack itemStack) {
         this.slot = slot;
         this.itemStack = itemStack;
-    }
-
-    public ItemStack getItemStack() {
-        return itemStack;
-    }
-
-    public int getSlot() {
-        return slot;
     }
 }

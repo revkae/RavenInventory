@@ -1,94 +1,66 @@
 package me.raven;
 
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import javax.swing.text.html.Option;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class RvPageInventory {
 
-    private List<RvInventory> inventories = new ArrayList<>();
+    private Map<Integer, RvPage> pages = Maps.newLinkedHashMap();
 
     public RvPageInventory() {}
 
     public RvPageInventory(RvInventory... rvInventories) {
-        this.inventories.addAll(Arrays.asList(rvInventories));
-    }
-
-    public RvPageInventory(Inventory... inventories) {
-        this.inventories = Arrays.stream(inventories)
-                .map(RvInventory::new)
-                .collect(Collectors.toList());
+        for (int i = 0; i < rvInventories.length; i++) {
+            this.pages.put(i, RvPage.with(rvInventories[i], i));
+        }
     }
 
     public RvPageInventory(RvInventory rvInventory, int amount) {
-        this.inventories = new ArrayList<>(amount);
         for (int i = 0; i < amount; i++) {
-            inventories.add(rvInventory);
+            this.pages.put(i, RvPage.with(rvInventory.clone(), i));
         }
     }
 
-    public RvPageInventory(Inventory inventory, int amount) {
-        this.inventories = new ArrayList<>(amount);
-        for (int i = 0; i < amount; i++) {
-            inventories.add(new RvInventory(inventory));
-        }
+    public RvPage getPage(int index) {
+        return pages.get(index);
     }
 
-    public int getPageIndex(RvInventory inventory) {
-        int index = 0;
-        for (int i = 0; i < inventories.size(); i++) {
-            if (inventories.get(i).equals(inventory)) {
-                index = i;
-                break;
-            }
-        }
-        return index;
+    public RvPage getPage(RvInventory rvInventory) {
+        return pages.values().stream()
+                .filter(page -> page.getPage().equals(rvInventory))
+                .findFirst().orElse(null);
     }
 
-    public RvInventory getPage(int index) {
-        return inventories.get(index);
+    public List<RvPage> getPages() {
+        return (List<RvPage>) pages.values();
     }
 
-    public List<RvInventory> getPages() {
-        return inventories;
+    public RvPage getFirstPage() {
+        return pages.get(0);
     }
 
-    public RvInventory getFirstPage() {
-        return inventories.get(0);
+    public RvPage getLastPage() {
+        return pages.get(pages.size() - 1);
     }
 
-    public List<RvInventory> getMiddlePages() {
-        return inventories.stream()
-                .filter(inventory -> !inventory.equals(getFirstPage()))
-                .filter(inventory -> !inventory.equals(getLastPage()))
+    public List<RvPage> getMiddlePages() {
+        return pages.values().stream()
+                .filter(page -> !page.equals(getFirstPage()))
+                .filter(page -> !page.equals(getLastPage()))
                 .collect(Collectors.toList());
     }
 
-    public RvInventory getLastPage() {
-        return inventories.get(inventories.size() == 0 ? 0 : inventories.size() - 1);
+    public int getPageCount() {
+        return pages.size();
     }
-
-    public RvInventory getPage(Inventory inventory) {
-        if (inventory == null) return null;
-
-        return getPages().stream()
-                .filter(page -> page.build().equals(inventory))
-                .findAny()
-                .orElse(null);
-    }
-
-    public int getPageAmount() {
-        return inventories.size();
-    }
-
-    // ADD FEATURES
 
     public RvPageInventory addPages(RvInventory... rvInventories) {
         for (RvInventory rvInventory : rvInventories) {
@@ -97,91 +69,81 @@ public class RvPageInventory {
         return this;
     }
 
-    public RvPageInventory addPage(RvInventory rvInventory) {
-        inventories.add(rvInventory);
-        return this;
-    }
-
     public RvPageInventory addPages(RvInventory rvInventory, int amount) {
         for (int i = 0; i < amount; i++) {
-            inventories.add(rvInventory);
+            addPage(rvInventory.clone());
         }
         return this;
     }
 
-    // REMOVE FEATURES
+    public RvPageInventory addPage(RvInventory rvInventory) {
+        pages.put(pages.size(), RvPage.with(rvInventory, pages.size()));
+        return this;
+    }
 
     public RvPageInventory removePage(int index) {
-        inventories.remove(index);
-        inventories = inventories.stream().filter(Objects::nonNull).collect(Collectors.toList());
+        pages.remove(index);
+        Map<Integer, RvPage> newPages = new LinkedHashMap<>();
+        int count = 0;
+        for (Integer key : pages.keySet()) {
+            RvPage page = pages.get(key);
+            page.setIndex(count);
+            newPages.put(count, page);
+            ++count;
+        }
+        pages = newPages;
         return this;
     }
 
     public RvPageInventory removePages(int... indexes) {
         for (int index : indexes) {
-            inventories.remove(index);
+            pages.remove(index);
         }
-        inventories = inventories.stream().filter(Objects::nonNull).collect(Collectors.toList());
+        Map<Integer, RvPage> newPages = new LinkedHashMap<>();
+        int count = 0;
+        for (Integer key : pages.keySet()) {
+            RvPage page = pages.get(key);
+            page.setIndex(count);
+            newPages.put(count, page);
+            ++count;
+        }
+        pages = newPages;
         return this;
     }
 
-    // QUESTION FEATURES
-
     public boolean isPageEmpty(int index) {
-        return inventories.get(index).getExtra().isEmpty();
+        return pages.get(index).getPage().getExtra().isEmpty();
     }
 
     public boolean isPageFull(int index) {
-        return inventories.get(index).getExtra().isFull();
-    }
-
-    public boolean hasPage(Inventory inventory) {
-        return getPages().stream().anyMatch(rvInventory -> rvInventory.build().equals(inventory));
+        return pages.get(index).getPage().getExtra().isFull();
     }
 
     public boolean hasPage(RvInventory rvInventory) {
-        return getPages().stream().anyMatch(inv -> inv.equals(rvInventory));
+        return getPages().stream().anyMatch(page -> page.getPage().equals(rvInventory));
     }
 
-    // SPECIAL FEATURES
+    public Optional<RvPage> nextPage(RvInventory rvInventory) {
+        Map.Entry<Integer, RvPage> entry = pages.entrySet().stream()
+                .filter((page) -> page.getValue().getPage().equals(rvInventory))
+                .findFirst().orElse(null);
 
-    public RvInventory nextPage(RvInventory rvInventory) {
-        int page = -1;
-        for (int i = 0; i < inventories.size(); i++) {
-            if (inventories.get(i).build().equals(rvInventory.build())) {
-                page = i;
-                break;
-            }
-        }
+        if (entry == null) return Optional.empty();
 
-        if (page == -1) {
-            return null;
-        }
+        if (!pages.containsKey(entry.getKey() + 1)) return Optional.empty();
 
-        if (page + 1 == inventories.size()) {
-            return null;
-        }
-
-        return inventories.get(page + 1);
+        return Optional.of(pages.get(entry.getKey() + 1));
     }
 
-    public RvInventory previousPage(RvInventory rvInventory) {
-        int page = -1;
-        for (int i = 0; i < inventories.size(); i++) {
-            if (inventories.get(i).build().equals(rvInventory.build())) {
-                page = i;
-                break;
-            }
-        }
+    public Optional<RvPage> previousPage(RvInventory rvInventory) {
+        Map.Entry<Integer, RvPage> entry = pages.entrySet().stream()
+                .filter((page) -> page.getValue().getPage().equals(rvInventory))
+                .findFirst().orElse(null);
 
-        if (page == -1) {
-            return null;
-        }
+        if (entry == null) return Optional.empty();
 
-        if (page == 0) {
-            return null;
-        }
+        if (!pages.containsKey(entry.getKey() - 1)) return Optional.empty();
 
-        return inventories.get(page - 1);
+        return Optional.of(pages.get(entry.getKey() - 1));
     }
 }
