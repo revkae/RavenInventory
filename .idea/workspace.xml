@@ -5,13 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d8ed8768-44a0-4e0d-9e8b-a82b00773265" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/me/raven/RvPage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/raven/RvInventory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/raven/RvInventory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/raven/RvLayout.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/raven/Interfaces/IRvLayout.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/raven/RvPageInventory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/raven/RvPageInventory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/raven/RvSlot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/raven/RvSlot.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/raven/RvColumn.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/raven/RvColumn.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/raven/RvRow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/raven/RvRow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/raven/abstracts/ARvGrid.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/raven/abstracts/ARvGrid.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

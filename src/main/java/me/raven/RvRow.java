@@ -3,7 +3,7 @@ package me.raven;
 import me.raven.abstracts.ARvGrid;
 import org.bukkit.inventory.ItemStack;
 
-public class RvRow extends ARvGrid {
+public class RvRow extends ARvGrid<RvSlot> {
 
     public RvRow() {
         super();

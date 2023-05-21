@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public abstract class ARvGrid {
+public abstract class ARvGrid<T> implements Cloneable{
 
     public List<ItemStack> arrangement;
 
@@ -35,24 +35,28 @@ public abstract class ARvGrid {
         }
     }
 
-    public void setItem(int index, ItemStack item) {
+    public T setItem(int index, ItemStack item) {
         arrangement.set(index, item);
+        return (T) this;
     }
 
-    public void setItem(RvSlot item) {
+    public T setItem(RvSlot item) {
         arrangement.set(item.getSlot(), item.getItemStack());
+        return (T) this;
     }
 
-    public void setItem(ItemStack items, int... indexes) {
+    public T setItem(ItemStack items, int... indexes) {
         for (int index : indexes) {
             arrangement.set(index, items);
         }
+        return (T) this;
     }
 
-    public void setItems(RvSlot... items) {
+    public T setItems(RvSlot... items) {
         for (RvSlot item : items) {
             arrangement.set(item.getSlot(), item.getItemStack());
         }
+        return (T) this;
     }
 
     public ItemStack getItem(int index) {
@@ -101,7 +105,18 @@ public abstract class ARvGrid {
         return items.isEmpty();
     }
 
-    public void fillOut(ItemStack item) {
+    public T fillOut(ItemStack item) {
         arrangement.replaceAll(ignored -> item);
+        return (T) this;
+    }
+
+    public T clone() {
+        T clone;
+        try {
+            clone = (T) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
+        return clone;
     }
 }
