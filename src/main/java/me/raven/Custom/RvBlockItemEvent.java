@@ -13,12 +13,14 @@ public class RvBlockItemEvent extends Event {
 
     private final Player player;
     private final ItemStack trigger;
+    private final String key;
     private final Inventory inventory;
     private final InventoryClickEvent event;
 
-    public RvBlockItemEvent(Player player, ItemStack trigger, Inventory inventory, InventoryClickEvent event) {
+    public RvBlockItemEvent(Player player, ItemStack trigger, String key, Inventory inventory, InventoryClickEvent event) {
         this.player = player;
         this.trigger = trigger;
+        this.key = key;
         this.inventory = inventory;
         this.event = event;
     }
@@ -37,6 +39,10 @@ public class RvBlockItemEvent extends Event {
 
     public ItemStack getTrigger() {
         return trigger;
+    }
+
+    public String getKey() {
+        return key;
     }
 
     public HandlerList getHandlers() {

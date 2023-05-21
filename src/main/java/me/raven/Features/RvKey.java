@@ -28,6 +28,16 @@ public class RvKey extends ARvStorage implements IRvKey {
     }
 
     @Override
+    public String getBlockedKey(ItemStack itemStack) {
+        for (String key : new NBTItem(itemStack).getKeys()) {
+            if (blockedKeys.contains(key)) {
+                return key;
+            }
+        }
+        return null;
+    }
+
+    @Override
     public void addAllowedKey(String key) {
         allowedKeys.add(key);
     }
@@ -40,5 +50,15 @@ public class RvKey extends ARvStorage implements IRvKey {
     @Override
     public boolean hasAllowedKey(ItemStack itemStack) {
         return new NBTItem(itemStack).getKeys().stream().anyMatch(allowedKeys::contains);
+    }
+
+    @Override
+    public String getAllowedKey(ItemStack itemStack) {
+        for (String key : new NBTItem(itemStack).getKeys()) {
+            if (allowedKeys.contains(key)) {
+                return key;
+            }
+        }
+        return null;
     }
 }

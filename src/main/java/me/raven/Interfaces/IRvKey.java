@@ -11,9 +11,13 @@ public interface IRvKey {
 
     boolean hasBlockedKey(ItemStack itemStack);
 
+    String getBlockedKey(ItemStack itemStack);
+
     void addAllowedKey(String key);
 
     void removeAllowedKey(String key);
 
     boolean hasAllowedKey(ItemStack itemStack);
+
+    String getAllowedKey(ItemStack itemStack);
 }
