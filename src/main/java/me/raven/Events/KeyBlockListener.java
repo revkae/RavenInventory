@@ -24,6 +24,7 @@ public class KeyBlockListener implements Listener {
         Player player = (Player) event.getWhoClicked();
         Inventory clickedInv = event.getClickedInventory();
         ItemStack clickedItem = event.getCurrentItem();
+        int slot = event.getSlot();
 
         if (clickedInv == null) return;
 
@@ -35,7 +36,7 @@ public class KeyBlockListener implements Listener {
 
         String key = rvInventory.getKey().getBlockedKey(clickedItem);
 
-        Bukkit.getServer().getPluginManager().callEvent(new RvBlockItemEvent(player, clickedItem, key, event.getClickedInventory(), event));
+        Bukkit.getServer().getPluginManager().callEvent(new RvBlockItemEvent(player, clickedItem, slot, key, event.getClickedInventory(), event));
     }
 
 }

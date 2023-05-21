@@ -24,6 +24,7 @@ public class KeyAllowListener implements Listener {
         Inventory clickedInv = event.getClickedInventory();
         ItemStack clickedItem = event.getCurrentItem();
         Player player = (Player) event.getWhoClicked();
+        int slot = event.getSlot();
 
         if (clickedInv == null) return;
 
@@ -35,7 +36,7 @@ public class KeyAllowListener implements Listener {
 
         String key = rvInventory.getKey().getAllowedKey(clickedItem);
 
-        Bukkit.getServer().getPluginManager().callEvent(new RvAllowItemEvent(player, clickedItem, key, event.getClickedInventory(), event));
+        Bukkit.getServer().getPluginManager().callEvent(new RvAllowItemEvent(player, clickedItem, slot, key, event.getClickedInventory(), event));
     }
 
 }
