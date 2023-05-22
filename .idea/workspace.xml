@@ -6,10 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="d8ed8768-44a0-4e0d-9e8b-a82b00773265" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/raven/Custom/RvAllowItemEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/raven/Custom/RvAllowItemEvent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/raven/Custom/RvBlockItemEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/raven/Custom/RvBlockItemEvent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/raven/Events/KeyAllowListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/raven/Events/KeyAllowListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/me/raven/Events/KeyBlockListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/raven/Events/KeyBlockListener.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,16 +57,13 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
-  </component>
-  <component name="ProblemsViewState">
-    <option name="autoscrollToSource" value="true" />
   </component>
   <component name="ProjectId" id="2PHroFo21mb2ZMUrjeUmR7WAbj5" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -84,7 +77,7 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/ravan/Documents/JavaDev/RavenInventory/src/main/java/me/raven&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/test/Documents/dev/Libraries/RavenInventory/src/main/java/me/raven&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -97,6 +90,7 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\test\Documents\dev\Libraries\RavenInventory\src\main\java\me\raven" />
       <recent name="$PROJECT_DIR$/src/main/java/me/raven" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
@@ -151,6 +145,8 @@
       <workItem from="1683996022196" duration="183000" />
       <workItem from="1684058768609" duration="200000" />
       <workItem from="1684079511961" duration="734000" />
+      <workItem from="1684581742660" duration="1303000" />
+      <workItem from="1684783142244" duration="141000" />
     </task>
     <servers />
   </component>
