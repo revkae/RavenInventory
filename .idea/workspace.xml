@@ -6,11 +6,15 @@
   <component name="ChangeListManager">
     <list default="true" id="d8ed8768-44a0-4e0d-9e8b-a82b00773265" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/raven/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/raven/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeStyleSettingsInfer">
+    <option name="done" value="true" />
   </component>
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
@@ -64,6 +68,9 @@
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectCodeStyleSettingsMigration">
+    <option name="version" value="2" />
   </component>
   <component name="ProjectId" id="2PHroFo21mb2ZMUrjeUmR7WAbj5" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -147,6 +154,9 @@
       <workItem from="1684079511961" duration="734000" />
       <workItem from="1684581742660" duration="1303000" />
       <workItem from="1684783142244" duration="375000" />
+      <workItem from="1684855885958" duration="881000" />
+      <workItem from="1685014347727" duration="457000" />
+      <workItem from="1686925337363" duration="90000" />
     </task>
     <servers />
   </component>
